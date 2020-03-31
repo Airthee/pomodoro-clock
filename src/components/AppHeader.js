@@ -42,14 +42,14 @@ class AppHeader extends React.Component {
 
   render() {
     return (
-      <div>
+      <section>
         <h1>{data.projectName}</h1>
         <p>
           Hi ! Welcome to the {data.projectName} !<br/>
           This is a project #{data.projectNumber} Free Code Camp's "Front End Libraries" certification.<br/>
         </p>
         {this.renderLinks()}
-      </div>
+      </section>
     );
   }
 }
