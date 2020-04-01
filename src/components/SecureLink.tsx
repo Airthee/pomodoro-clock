@@ -1,8 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
+type SecureLinkProps = {
+  href: string,
+  openInNewTab: boolean
+};
 
 // Component
-class SecureLink extends React.Component {
+class SecureLink extends React.Component<SecureLinkProps> {
+  // Default props values
+  static defaultProps: {
+    openInNewTab: true;
+  };
+  
   render() {
     return (
       <a
@@ -13,16 +22,5 @@ class SecureLink extends React.Component {
     );
   }
 }
-
-// Prop types
-SecureLink.propTypes = {
-  href: PropTypes.string.isRequired,
-  openInNewTab: PropTypes.bool
-};
-
-// Default props values
-SecureLink.defaultProps = {
-  openInNewTab: true
-};
 
 export default SecureLink;

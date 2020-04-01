@@ -19,7 +19,7 @@ const data = {
 
 // React component
 class AppHeader extends React.Component {
-  constructor(props) {
+  constructor(props : object) {
     super(props);
     this.renderLinks = this.renderLinks.bind(this);
   }
