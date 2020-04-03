@@ -60,12 +60,14 @@ class PomodoroClock extends React.Component<Props, State> {
       // If we are in sesssion
       // Set break timer and break timer values
       case TypeTimer.Session:
+        state.currentTimer = TypeTimer.Break;
         state.timerMinutes = state.breakLength;
         break;
 
       // If we are in break
       // Set session timer and session time values
       case TypeTimer.Break:
+        state.currentTimer = TypeTimer.Session;
         state.timerMinutes = state.sessionLength;
         break;
     }
