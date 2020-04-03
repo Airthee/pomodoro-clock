@@ -7,12 +7,18 @@ import './PomodoroClock.scss';
 
 type Props = {};
 
+enum TypeTimer {
+  Session = 'session',
+  Break = 'break'
+};
+
 type State = {
   breakLength: number,
   sessionLength: number,
   timerMinutes: number,
   timerSeconds: number,
-  timerInterval: NodeJS.Timeout|null
+  timerInterval: NodeJS.Timeout|null,
+  currentTimer: TypeTimer
 };
 
 // Constants
@@ -25,7 +31,8 @@ const INITIAL_STATE = {
   sessionLength: INTIIAL_SESSION_LENGTH,
   timerMinutes: INTIIAL_SESSION_LENGTH,
   timerSeconds: 0,
-  timerInterval: null
+  timerInterval: null,
+  currentTimer: TypeTimer.Session
 };
 
 class PomodoroClock extends React.Component<Props, State> {
@@ -42,6 +49,33 @@ class PomodoroClock extends React.Component<Props, State> {
     this.handleTimerReset = this.handleTimerReset.bind(this);
     this.handleTimerStartStop = this.handleTimerStartStop.bind(this);
     this.clearTimerInterval = this.clearTimerInterval.bind(this);
+    this.getTimerLabel = this.getTimerLabel.bind(this);
+    this.switchTimer = this.switchTimer.bind(this);
+  }
+
+  switchTimer(state: State) {
+    state.timerSeconds = INITIAL_STATE.timerSeconds;
+
+    switch(state.currentTimer) {
+      // If we are in sesssion
+      // Set break timer and break timer values
+      case TypeTimer.Session:
+        state.timerMinutes = state.breakLength;
+        break;
+
+      // If we are in break
+      // Set session timer and session time values
+      case TypeTimer.Break:
+        state.timerMinutes = state.sessionLength;
+        break;
+    }
+  }
+
+  getTimerLabel() {
+    switch(this.state.currentTimer) {
+      case TypeTimer.Session: return 'Session';
+      case TypeTimer.Break: return 'Break';
+    }
   }
 
   clearTimerInterval() {
@@ -83,6 +117,11 @@ class PomodoroClock extends React.Component<Props, State> {
           if (newState.timerSeconds < 0) {
             newState.timerSeconds = 59;
             newState.timerMinutes -= 1;
+          }
+
+          // If minutes is < 0, switch timer
+          if (newState.timerMinutes < 0) {
+            this.switchTimer(newState);
           }
   
           return newState;
@@ -171,7 +210,7 @@ class PomodoroClock extends React.Component<Props, State> {
         <Row>
           <Col>
             <PomodoroTimer
-              label="Session"
+              label={this.getTimerLabel()}
               minutes={this.state.timerMinutes}
               seconds={this.state.timerSeconds}
             />
