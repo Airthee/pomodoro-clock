@@ -20,7 +20,7 @@ class PomodoroLengthPicker extends React.Component<Props> {
       <div className="pomodoro-length-picker">
         <div id={this.generateId('label')} className="pomodoro-length-picker--label">{this.props.children}</div>
         <div className="d-flex justify-content-center align-items-center">
-          <span id={this.generateId('increment')} className="pomodoro-length-picker--arrow" onClick={this.props.onClickDecrement}>
+          <span id={this.generateId('decrement')} className="pomodoro-length-picker--arrow" onClick={this.props.onClickDecrement}>
             <FontAwesomeIcon icon={faArrowDown} size="2x" />
           </span>
 
@@ -28,7 +28,7 @@ class PomodoroLengthPicker extends React.Component<Props> {
             {this.props.value}
           </span>
           
-          <span id={this.generateId('decrement')} className="pomodoro-length-picker--arrow" onClick={this.props.onClickIncrement}>
+          <span id={this.generateId('increment')} className="pomodoro-length-picker--arrow" onClick={this.props.onClickIncrement}>
             <FontAwesomeIcon icon={faArrowUp} size="2x" />
           </span>
         </div>
