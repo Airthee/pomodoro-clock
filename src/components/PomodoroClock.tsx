@@ -40,8 +40,11 @@ class PomodoroClock extends React.Component<Props, State> {
     ...INITIAL_STATE
   };
 
+  audioRef: React.RefObject<HTMLAudioElement> = React.createRef<HTMLAudioElement>();
+
   constructor(props: Props) {
     super(props);
+
     this.handleIncrementBreak = this.handleIncrementBreak.bind(this);
     this.handleDecrementBreak = this.handleDecrementBreak.bind(this);
     this.handleIncrementSession = this.handleIncrementSession.bind(this);
@@ -87,11 +90,15 @@ class PomodoroClock extends React.Component<Props, State> {
   }
 
   handleTimerReset() {
-    this.setState((state) => {
-      this.clearTimerInterval();
-      return {
-        ...INITIAL_STATE
-      };
+    // Stop the audio if playing
+    if (this.audioRef.current && !this.audioRef.current.paused) {
+      this.audioRef.current.pause();
+      this.audioRef.current.currentTime = 0;
+    }
+    this.clearTimerInterval();
+
+    this.setState({
+      ...INITIAL_STATE
     });
   }
 
@@ -121,9 +128,19 @@ class PomodoroClock extends React.Component<Props, State> {
             newState.timerMinutes -= 1;
           }
 
-          // If minutes is < 0, switch timer
+          // If minutes is < 0, play audio and switch timer
           if (newState.timerMinutes < 0) {
             this.switchTimer(newState);
+          }
+
+          // If minutes and seconds reach 0, play sound
+          if (newState.timerMinutes === 0 && newState.timerSeconds === 0) {
+            if (this.audioRef.current) {
+              this.audioRef.current.play();
+            }
+            else {
+              throw Error('No audio element');
+            }
           }
   
           return newState;
@@ -216,6 +233,7 @@ class PomodoroClock extends React.Component<Props, State> {
               minutes={this.state.timerMinutes}
               seconds={this.state.timerSeconds}
             />
+            <audio id="beep" ref={this.audioRef} src="/sounds/censor-beep-6.mp3" />
           </Col>
         </Row>
         <Row>
