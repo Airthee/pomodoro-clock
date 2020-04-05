@@ -1,4 +1,5 @@
 import React from 'react';
+import './PomodoroTimer.scss';
 
 type Props = {
   label: string,
@@ -11,7 +12,7 @@ class PomodoroTimer extends React.Component<Props> {
     const formattedMinutes = String(this.props.minutes).padStart(2, '0');
     const formattedSeconds = String(this.props.seconds).padStart(2, '0');
     return (
-      <div id="time-left">
+      <div id="time-left" className="pomodoro-timer--time-left">
         {formattedMinutes}:{formattedSeconds}
       </div>
     );
@@ -19,8 +20,8 @@ class PomodoroTimer extends React.Component<Props> {
 
   render() {
     return (
-      <div>
-        <div id="timer-label">{this.props.label}</div>
+      <div className="pomodoro-timer">
+        <div id="timer-label" className="pomodoro-timer--label">{this.props.label}</div>
         {this.renderTimeLeft()}
       </div>
     );

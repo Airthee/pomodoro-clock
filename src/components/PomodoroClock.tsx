@@ -206,8 +206,21 @@ class PomodoroClock extends React.Component<Props, State> {
   }
 
   render() {
+    const classes = [
+      'pomodoro-clock',
+    ];
+
+    // If timer is running
+    // add class according to session or break
+    if (this.state.timerInterval !== null) {
+      classes.push(this.state.currentTimer === TypeTimer.Session ? 'bg-danger' : 'bg-info');
+    }
+    else {
+      classes.push('bg-secondary');
+    }
+
     return (
-      <div className="pomodoro-clock">
+      <div className={classes.join(' ')}>
         <Row>
           <Col>
             <PomodoroLengthPicker
