@@ -6,21 +6,18 @@ type SecureLinkProps = {
 };
 
 // Component
-class SecureLink extends React.Component<SecureLinkProps> {
-  // Default props values
-  static defaultProps: {
-    openInNewTab: true;
-  };
-  
-  render() {
-    return (
-      <a
-        href={this.props.href}
-        rel="noopener noreferrer"
-        target={this.props.openInNewTab ? '_blank' : ''}
-      >{this.props.children}</a>
-    );
-  }
+const SecureLink: React.FunctionComponent<SecureLinkProps> = (props) => {
+  return (
+    <a
+      href={props.href}
+      rel="noopener noreferrer"
+      target={props.openInNewTab ? '_blank' : ''}
+    >{props.children}</a>
+  );
 }
+
+SecureLink.defaultProps = {
+  openInNewTab: true
+};
 
 export default SecureLink;

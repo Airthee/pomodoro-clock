@@ -7,10 +7,10 @@ type Props = {
   seconds: number
 };
 
-class PomodoroTimer extends React.Component<Props> {
-  renderTimeLeft() {
-    const formattedMinutes = String(this.props.minutes).padStart(2, '0');
-    const formattedSeconds = String(this.props.seconds).padStart(2, '0');
+const PomodoroTimer = (props: Props) => {
+  const renderTimeLeft = () => {
+    const formattedMinutes = String(props.minutes).padStart(2, '0');
+    const formattedSeconds = String(props.seconds).padStart(2, '0');
     return (
       <div id="time-left" className="pomodoro-timer--time-left">
         {formattedMinutes}:{formattedSeconds}
@@ -18,14 +18,12 @@ class PomodoroTimer extends React.Component<Props> {
     );
   }
 
-  render() {
-    return (
-      <div className="pomodoro-timer">
-        <div id="timer-label" className="pomodoro-timer--label">{this.props.label}</div>
-        {this.renderTimeLeft()}
-      </div>
-    );
-  }
+  return (
+    <div className="pomodoro-timer">
+      <div id="timer-label" className="pomodoro-timer--label">{props.label}</div>
+      {renderTimeLeft()}
+    </div>
+  );
 }
 
 export default PomodoroTimer;

@@ -10,31 +10,29 @@ type Props = {
   onClickDecrement: (() => void)
 };
 
-class PomodoroLengthPicker extends React.Component<Props> {
-  generateId(suffix: string) {
-    return [this.props.idPrefix, suffix].join('-');
+const PomodoroLengthPicker: React.FunctionComponent<Props> = (props) => {
+  const generateId = (suffix: string) => {
+    return [props.idPrefix, suffix].join('-');
   }
 
-  render() {
-    return (
-      <div className="pomodoro-length-picker">
-        <div id={this.generateId('label')} className="pomodoro-length-picker--label">{this.props.children}</div>
-        <div className="d-flex justify-content-center align-items-center">
-          <span id={this.generateId('decrement')} className="pomodoro-length-picker--arrow" onClick={this.props.onClickDecrement}>
-            <FontAwesomeIcon icon={faArrowDown} size="2x" />
-          </span>
+  return (
+    <div className="pomodoro-length-picker">
+      <div id={generateId('label')} className="pomodoro-length-picker--label">{props.children}</div>
+      <div className="d-flex justify-content-center align-items-center">
+        <span id={generateId('decrement')} className="pomodoro-length-picker--arrow" onClick={props.onClickDecrement}>
+          <FontAwesomeIcon icon={faArrowDown} size="2x" />
+        </span>
 
-          <span id={this.generateId('length')} className="pomodoro-length-picker--value">
-            {this.props.value}
-          </span>
-          
-          <span id={this.generateId('increment')} className="pomodoro-length-picker--arrow" onClick={this.props.onClickIncrement}>
-            <FontAwesomeIcon icon={faArrowUp} size="2x" />
-          </span>
-        </div>
+        <span id={generateId('length')} className="pomodoro-length-picker--value">
+          {props.value}
+        </span>
+        
+        <span id={generateId('increment')} className="pomodoro-length-picker--arrow" onClick={props.onClickIncrement}>
+          <FontAwesomeIcon icon={faArrowUp} size="2x" />
+        </span>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default PomodoroLengthPicker;

@@ -12,28 +12,26 @@ type DefaultProps = {
   onReset: () => void,
 };
 
-class PomodoroControls extends React.Component<Props> {
-  static defaultProps: DefaultProps = {
-    onStartStop: () => {},
-    onReset: () => {}
-  }
-
-  render() {
-    return (
-      <div className="pomodoro-controls d-flex flex-row justify-content-center">
-        <div className="p-2">
-          <span id="start_stop" className="pomodoro-controls--action" onClick={this.props.onStartStop}>
-            <FontAwesomeIcon icon={this.props.running ? faPause : faPlay} size="2x"/>
-          </span>
-        </div>
-        <div className="p-2">
-          <span id="reset" className="pomodoro-controls--action" onClick={this.props.onReset}>
-            <FontAwesomeIcon icon={faRedo} size="2x"/>
-          </span>
-        </div>
+const PomodoroControls = (props: Props) => {
+  return (
+    <div className="pomodoro-controls d-flex flex-row justify-content-center">
+      <div className="p-2">
+        <span id="start_stop" className="pomodoro-controls--action" onClick={props.onStartStop}>
+          <FontAwesomeIcon icon={props.running ? faPause : faPlay} size="2x"/>
+        </span>
       </div>
-    );
-  }
+      <div className="p-2">
+        <span id="reset" className="pomodoro-controls--action" onClick={props.onReset}>
+          <FontAwesomeIcon icon={faRedo} size="2x"/>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+PomodoroControls.defaultProps = {
+  onStartStop: () => {},
+  onReset: () => {}
 }
 
 export default PomodoroControls;
