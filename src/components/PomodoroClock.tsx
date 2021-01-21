@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {Row, Col} from 'react-bootstrap';
 import PomodoroLengthPicker from './PomodoroLengthPicker';
 import PomodoroTimer from './PomodoroTimer';
 import PomodoroControls from './PomodoroControls';
+import SoundManager from './SoundManager';
 import './PomodoroClock.scss';
 
 type Props = {};
@@ -71,7 +72,23 @@ const PomodoroClock = (props: Props) => {
     }
   };
   
+  // Audio management
   const audioRef = React.createRef<HTMLAudioElement>();
+  const [ volume, setVolume ] = useState<number>(parseFloat(window.localStorage.getItem('volume') || '100'));
+  const playAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+    else {
+      throw Error('No audio element');
+    }
+  }, [ audioRef ]);
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
+    }
+    window.localStorage.setItem('volume', volume.toString());
+  }, [ audioRef, volume ]);
 
   // Reset state
   const resetState = () => {
@@ -128,14 +145,9 @@ const PomodoroClock = (props: Props) => {
   // If minutes and seconds reach 0, play sound
   useEffect(() => {
     if (timerMinutes === 0 && timerSeconds === 0) {
-      if (audioRef.current) {
-        audioRef.current.play();
-      }
-      else {
-        throw Error('No audio element');
-      }
+      playAudio();
     }
-  }, [ timerSeconds, timerMinutes, audioRef ]);
+  }, [timerSeconds, timerMinutes, audioRef, playAudio]);
 
   const handleIncrementBreak = () => {
     setBreakLength((current) => {
@@ -185,8 +197,7 @@ const PomodoroClock = (props: Props) => {
     })
   };
 
-  const [classes, setClasses] = useState<Array<string>>([]);
-  useEffect(() => {
+  const classes: Array<string> = useMemo(() => {
     const newClasses = [
       'pomodoro-clock',
     ]
@@ -199,7 +210,7 @@ const PomodoroClock = (props: Props) => {
     else {
       newClasses.push('bg-secondary');
     }
-    setClasses(newClasses);
+    return newClasses;
   }, [currentTimer, timerInterval])
 
 
@@ -240,6 +251,11 @@ const PomodoroClock = (props: Props) => {
             onReset={handleTimerReset}
             onStartStop={handleTimerStartStop}
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <SoundManager initialValue={volume} onSoundChanged={setVolume} onTest={playAudio} />
         </Col>
       </Row>
     </div>
